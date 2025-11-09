@@ -1,4 +1,4 @@
-const CandidateCard = ({ candidate, onVote, disabled }) => {
+const CandidateCard = ({ candidate, onVote, disabled, isAdmin = false }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
       {candidate.photo && (
@@ -22,9 +22,15 @@ const CandidateCard = ({ candidate, onVote, disabled }) => {
         <p className="text-sm text-gray-700">{candidate.manifesto}</p>
       </div>
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-500">
-          {candidate.votesCount || 0} votes
-        </span>
+        {isAdmin ? (
+          <span className="text-sm text-gray-500">
+            {candidate.votesCount || 0} votes
+          </span>
+        ) : (
+          <span className="text-sm text-gray-500">
+            Vote Now!
+          </span>
+        )}
         <button
           onClick={() => onVote(candidate._id)}
           disabled={disabled}

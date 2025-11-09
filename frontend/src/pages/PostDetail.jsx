@@ -9,7 +9,7 @@ const PostDetail = () => {
   const { post } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, isAdmin } = useAuth();
   const [candidates, setCandidates] = useState(location.state?.candidates || []);
   const [hasVoted, setHasVoted] = useState(location.state?.hasVoted || false);
   const [loading, setLoading] = useState(!location.state?.candidates);
@@ -130,6 +130,7 @@ const PostDetail = () => {
                     candidate={candidate}
                     onVote={handleVote}
                     disabled={hasVoted}
+                    isAdmin={isAdmin}
                   />
                 ))}
               </div>
