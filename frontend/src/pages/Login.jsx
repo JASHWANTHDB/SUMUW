@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
     studentId: '',
     password: ''
   });
-  const [loginType, setLoginType] = useState('email'); // 'email' or 'studentId'
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -23,9 +21,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const result = loginType === 'email'
-      ? await login(formData.email, null, formData.password)
-      : await login(null, formData.studentId, formData.password);
+    // Login using student ID only
+    const result = await login(null, formData.studentId, formData.password);
     
     if (result.success) {
       navigate('/dashboard');
@@ -46,65 +43,23 @@ const Login = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div className="mb-4">
-              <div className="flex gap-2 mb-2">
-                <button
-                  type="button"
-                  onClick={() => setLoginType('email')}
-                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${
-                    loginType === 'email'
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-gray-200 text-gray-700'
-                  }`}
-                >
-                  Email
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLoginType('studentId')}
-                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${
-                    loginType === 'studentId'
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-gray-200 text-gray-700'
-                  }`}
-                >
-                  Student ID
-                </button>
-              </div>
+              <p className="text-sm text-gray-600">Use Admission Number for 1st Years and USN for 2nd Years.</p>
             </div>
-            {loginType === 'email' ? (
-              <div>
-                <label htmlFor="email" className="sr-only">
-                  Email address
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-                  placeholder="Email address"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </div>
-            ) : (
-              <div>
-                <label htmlFor="studentId" className="sr-only">
-                  Student ID
-                </label>
-                <input
-                  id="studentId"
-                  name="studentId"
-                  type="text"
-                  required
-                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-                  placeholder="Student ID"
-                  value={formData.studentId}
-                  onChange={handleChange}
-                />
-              </div>
-            )}
+            <div>
+              <label htmlFor="studentId" className="sr-only">
+                Student ID
+              </label>
+              <input
+                id="studentId"
+                name="studentId"
+                type="text"
+                required
+                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                placeholder="Student ID"
+                value={formData.studentId}
+                onChange={handleChange}
+              />
+            </div>
             <div className="mt-4">
                 <br></br>
               <label htmlFor="password" className="sr-only">
